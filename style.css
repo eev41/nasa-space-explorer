@@ -1,3 +1,6 @@
+/* Public Source Sans and Merriweather per NASA Web Design System */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
 /* Global reset & box sizing */
 * {
   box-sizing: border-box;
@@ -7,7 +10,10 @@
 
 /* Base page styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Merriweather", serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
   background-color: #f1f1f1;
   padding: 20px;
 }
@@ -28,8 +34,8 @@ body {
   margin-bottom: 20px;
 }
 
-h1 {
-  font-family: Verdana, sans-serif;
+h1, h2, h3 {
+  font-family: Helvetica, sans-serif;
   font-weight: bold;
   color: #212121;
 }
@@ -52,8 +58,8 @@ h1 {
 
 /* Inputs and buttons */
 input[type="date"],
-button {
-  font-family: Arial, sans-serif;
+button, .btn, .btn-primary {
+  font-family: "Source Code Pro", serif;
   font-weight: normal;
   color: #666;
   padding: 10px 15px;
@@ -62,16 +68,25 @@ button {
   font-size: 16px;
   line-height: 1.4;
   width: 100%;
+  cursor: pointer;
 }
 
 /* Button specific */
-button {
-  background-color: #d3d3d3;
-  color: black;
+#getImages, .btn, .btn-primary {
+  background-color: #0032A0;
+  color: white;
   cursor: pointer;
 }
-button:hover {
-  background-color: #bfbfbf;
+#getImages:hover {
+  transition: background-color 5s ease-in;
+  background-color: #E4002B;
+  animation: rumble .25s infinite;
+}
+@keyframes rumble {
+  25% {transform: translateX(1px) translateY(1px)}
+  50% {transform: translateX(1px) translateY(-1px)}
+  75% {transform: translateX(-1px) translateY(1px)}
+  100% {transform: translateX(-1px) translateY(-1px)}
 }
 
 /* Stack horizontally on wider screens */
@@ -102,7 +117,7 @@ button:hover {
   min-width: 280px;
   max-width: 500px;
   background: white;
-  padding: 10px;
+  padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   overflow: hidden;
@@ -117,16 +132,88 @@ button:hover {
   }
 }
 
-.gallery-item img {
+.gallery-item img, .gallery-item video {
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
   border-radius: 4px;
+  transition: scale 0.5s ease;
+}
+
+.gallery-item img:hover, .gallery-item video:hover {
+  scale: 1.025;
+}
+
+.gallery-item h2 {
+  margin-top: 10px;
+  font-size: 28px;
+}
+
+.gallery-item h3 {
+  font-family: "Source Code Pro";
+  font-size: 21px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .gallery-item p {
   margin-top: 10px;
+  font-size: 14px;
+}
+
+.gallery-item button {
   padding: 5px;
+  width: fit-content;
+}
+
+/* Modals */
+.modal-dialog {
+  width: 90vw;
+  max-width: 90vw;
+  margin: 1.75rem auto;
+}
+
+.modal-content {
+  width: 100%;
+  overflow: hidden;
+}
+
+.modal-dialog-centered {
+  min-height: calc(100% - 3.5rem);
+}
+
+.gallery-modal {
+  flex: 1 1 100%;  /* full width by default */
+  width: 100%;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.gallery-modal img, .gallery-modal video {
+  width: 100%;
+  /* object-fit: contain; */
+  border-radius: 4px;
+}
+
+.gallery-modal h2 {
+  margin-top: 10px;
+  font-size: 28px;
+  display: inline;
+}
+
+.gallery-modal h3 {
+  font-family: "Source Code Pro";
+  font-size: 21px;
+  display: inline;
+}
+
+.gallery-modal p {
+  margin-top: 10px;
   font-size: 14px;
 }
 
@@ -136,9 +223,28 @@ button:hover {
   text-align: center;
   padding: 40px;
   color: #666;
+  background-color: #f1f1f1;
+  opacity: 1;
+  cursor: default;
 }
 
 .placeholder-icon {
   font-size: 48px;
   margin-bottom: 20px;
 }
+
+#loadingMessage {
+  display: none;
+}
+
+/* Loading animation from css-loaders.com */
+.loader {
+  margin: 10px auto 30px;
+  
+  width: 60px;
+  aspect-ratio: 4;
+  background: radial-gradient(circle closest-side,#000 90%,#0000) 0/calc(100%/3) 100% space;
+  clip-path: inset(0 100% 0 0);
+  animation: l1 1s steps(4) infinite;
+}
+@keyframes l1 {to{clip-path: inset(0 -34% 0 0)}}
