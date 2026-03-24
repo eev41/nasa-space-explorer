@@ -24,6 +24,14 @@ async function getImages()
   placeholder.style.display = "none";
   loadingMessage.style.display = "initial";
 
+  // Clear old gallery items
+  const galleryItems = document.getElementsByClassName("gallery-item")
+  const galleryModals = document.getElementsByClassName("modal")
+  while (galleryItems[0])
+    galleryItems[0].parentNode.removeChild(galleryItems[0]);
+  while (galleryModals[0])
+    galleryModals[0].parentNode.removeChild(galleryModals[0]);
+
   // Fetch Data then Hide Loading Message
   let response = await fetch(
     `https://api.nasa.gov/planetary/apod?start_date=${startInput.value}&end_date=${endInput.value}&api_key=PuncRyaOdCS0H6H6mo0Q7e3NVXjzoSNWMGStJ5LI`
@@ -31,6 +39,7 @@ async function getImages()
   let data = await response.json();
   loadingMessage.style.display = "none";
 
+  // Insert Gallery Items and Modals
   for (let i = 0; i < data.length; ++i)
   {
     if (data[i].media_type == "video")
@@ -42,7 +51,7 @@ async function getImages()
           <h3>${data[i].date} <button class="expand" data-bs-toggle="modal" data-bs-target="#modal${i}">+</button></h3>
         </div>`
       )
-      gallery.insertAdjacentHTML("afterend", 
+      gallery.insertAdjacentHTML("beforeend",
         `<div class="modal" id="modal${i}" data-bs-keyboard="false" tabindex="-1">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -66,7 +75,7 @@ async function getImages()
           <h3>${data[i].date} <button class="expand" data-bs-toggle="modal" data-bs-target="#modal${i}">+</button></h3>
         </div>`
       )
-      gallery.insertAdjacentHTML("afterend", 
+      gallery.insertAdjacentHTML("beforeend", 
         `<div class="modal" id="modal${i}" data-bs-keyboard="false" tabindex="-1">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -81,30 +90,6 @@ async function getImages()
         </div>`
       )
     }
-  }
-
-  galleryItems = document.getElementsByClassName("expand");
-  explanations = document.getElementsByClassName("explanation");
-  setModals();
-}
-
-// MODAL INTERFACE
-
-let galleryItems;
-let explanations;
-
-// Create modals for loaded images
-function setModals() {
-  for (let i = 0; i < galleryItems.length; ++i)
-  {
-    galleryItems[i].style.cursor = "pointer";
-    galleryItems[i].addEventListener("click", () => 
-    {
-      if (explanations[i].style.display == "initial")
-        explanations[i].style.display = "none";
-      else 
-        explanations[i].style.display = "initial";
-    })
   }
 }
 
